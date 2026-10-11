@@ -1,0 +1,11 @@
+# Données personnelles : progression, leçons importées, réglages
+data/
+backups/
+
+# Exports bruts et données de test
+variantes/export-dujour/
+variantes/data-test-genki/
+
+# Fichiers temporaires
+*.tmp
+*.log
