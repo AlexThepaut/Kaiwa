@@ -74,6 +74,14 @@ while ($listener.IsListening) {
       SendText $ctx 200 $sb.ToString() 'application/json; charset=utf-8'; continue
     }
 
+    if ($path -eq '/api/snapshot' -and $req.HttpMethod -eq 'POST') {
+      # copie de sécurité à la demande (avant un effacement de progression)
+      if ($req.Headers['X-Kaiwa'] -ne '1') { SendText $ctx 403 'forbidden'; continue }
+      $zip = Join-Path $bakDir ('avant-effacement-' + (Get-Date -Format 'yyyy-MM-dd_HH-mm-ss') + '.zip')
+      Compress-Archive -Path (Join-Path $dataDir '*') -DestinationPath $zip -Force
+      SendText $ctx 200 ([IO.Path]::GetFileName($zip)); continue
+    }
+
     if ($path -eq '/api/kv') {
       if ($req.Headers['X-Kaiwa'] -ne '1') { SendText $ctx 403 'forbidden'; continue }
       $k = $req.QueryString['k']

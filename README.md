@@ -48,6 +48,8 @@ Tout est écrit au fur et à mesure dans le dossier **`data/`** (un petit fichie
 cartes, missions, réglages (thème, voix, modèle d'IA…).
 
 - Une copie zippée de `data/` est faite chaque jour dans **`backups/`** (les 14 dernières sont gardées).
+- Avant tout effacement de la progression (Réglages → *Remettre ma progression à zéro*), l'app demande confirmation et crée
+  une copie `backups/avant-effacement-AAAA-MM-JJ_HH-mm-ss.zip`.
 - Changer d'ordinateur : copiez le dossier du projet avec `data/`.
 - Restaurer : arrêtez l'app, remplacez `data/` par le contenu d'une sauvegarde `backups/kaiwa-AAAA-MM-JJ.zip`, relancez.
 - Sauvegarde portable : **Réglages → Sauvegarder ma progression** télécharge un fichier `.json` (la progression seule, sans le contenu).

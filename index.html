@@ -1756,7 +1756,9 @@
   .pair-btn{ min-height:60px; border-radius:18px; border:1.5px solid var(--line); background: var(--surface); color: var(--ink); font-family: var(--sans); font-weight:700; font-size:16px; padding: 8px 12px; text-align:left; cursor:pointer; }
   .pair-btn.jp{ font-family: var(--serif); font-size:22px; }
   .pair-btn.sel{ border: 2px solid var(--accent); }
-  .pair-btn.matched{ background: var(--accent-tint); border-color: transparent; color: var(--accent); cursor:default; }
+  .pair-btn{ position:relative; transition:background .15s, border-color .15s; }
+  .pair-btn.matched{ background: color-mix(in srgb, var(--pcc, var(--accent)) 12%, var(--surface)); border-color: var(--pcc, var(--accent)); color: var(--ink); cursor:default; padding-right:44px; }
+  .pair-btn .sz-dot{ position:absolute; right:10px; top:50%; transform:translateY(-50%); width:24px; height:24px; border-radius:50%; background:var(--pcc, var(--accent)); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-family:var(--sans); font-size:12px; font-weight:700; }
   .pair-btn.wrong{ background: var(--bad-tint); border-color: var(--bad); }
   .pairs-count{ text-align:center; color: var(--ink-soft); font-size:14px; margin-top:16px; }
   .history-detail .romaji{ display:none; }
@@ -2026,13 +2028,35 @@
   .sz-tile{ font-family:var(--sans); font-size:16px; font-weight:600; background:var(--surface); color:var(--ink); border:1.5px solid var(--line-strong); border-radius:10px; padding:8px 12px; min-height:44px; cursor:pointer; }
   .sz-tile.on{ background:var(--accent-tint); border-color:var(--accent); }
   .sz-tile:disabled{ opacity:.35; }
-  .sz-assoc{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:0 0 8px; }
-  .sz-col{ display:flex; flex-direction:column; gap:8px; }
-  .sz-pair{ font-family:var(--sans); font-size:16px; font-weight:600; text-align:left; background:var(--surface); color:var(--ink); border:1.5px solid var(--line); border-radius:12px; padding:10px 12px; min-height:48px; cursor:pointer; }
-  .sz-pair.sel{ border-color:var(--accent); background:var(--accent-tint); }
-  .sz-pair.done{ border-color:var(--accent-deep); }
-  .sz-pair em{ display:block; font-style:normal; font-size:14px; color:var(--ink-soft); }
-  .sz-pair:disabled{ opacity:.35; }
+  .sz-step{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; font-family:var(--sans); font-size:13px; color:var(--ink-faint); margin:0 0 10px; }
+  .sz-step span{ display:inline-flex; align-items:center; gap:6px; }
+  .sz-step i{ font-style:normal; display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background:var(--line-strong); color:var(--surface); font-size:11px; font-weight:700; }
+  .sz-step .on{ color:var(--ink); font-weight:700; }
+  .sz-step .on i{ background:var(--accent-deep); }
+  .sz-assoc{ display:grid; grid-template-columns:1fr 1fr; gap:10px 18px; margin:0 0 10px; }
+  .sz-col{ display:flex; flex-direction:column; gap:10px; }
+  .pc1{ --pcc:hsl(158 46% 34%); } .pc2{ --pcc:hsl(24 78% 46%); } .pc3{ --pcc:hsl(262 46% 54%); }
+  .pc4{ --pcc:hsl(200 66% 40%); } .pc5{ --pcc:hsl(340 62% 48%); } .pc6{ --pcc:hsl(45 82% 38%); }
+  .sz-pair{ position:relative; display:flex; align-items:center; gap:8px; font-family:var(--sans); font-size:16px; font-weight:600; text-align:left; background:var(--surface); color:var(--ink); border:1.5px solid var(--line); border-radius:14px; padding:8px 10px 8px 12px; min-height:54px; cursor:pointer; transition:background .15s, border-color .15s, box-shadow .15s, transform .1s; }
+  .sz-pair:active{ transform:scale(.98); }
+  .sz-pair .sz-t{ flex:1; min-width:0; line-height:1.45; }
+  .sz-pair.r{ flex-direction:row-reverse; padding:8px 12px 8px 10px; }
+  .sz-pair .sz-dot{ flex:none; width:26px; height:26px; border-radius:50%; border:1.5px dashed var(--line-strong); display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#fff; }
+  .sz-pair.pc{ border-color:var(--pcc); background:color-mix(in srgb, var(--pcc) 12%, var(--surface)); }
+  .sz-pair.pc .sz-dot{ background:var(--pcc); border:none; }
+  .sz-pair.sel{ border-color:var(--accent-deep); background:var(--accent-tint); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); }
+  .sz-pair.sel .sz-dot{ border-style:solid; border-color:var(--accent-deep); }
+  .sz-assoc.picking .sz-pair.r:not(.pc){ border-style:dashed; border-color:var(--accent); animation:szpulse 1.3s ease-in-out infinite; }
+  @keyframes szpulse{ 0%,100%{ background:var(--surface); } 50%{ background:var(--accent-tint); } }
+  @media (prefers-reduced-motion: reduce){ .sz-assoc.picking .sz-pair.r:not(.pc){ animation:none; } }
+  .sz-recap{ display:flex; flex-direction:column; gap:8px; margin:10px 0 4px; }
+  .sz-rrow{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:8px; background:var(--surface); border:1.5px solid var(--line); border-radius:12px; padding:8px 10px; font-size:16px; font-weight:600; }
+  .sz-rrow{ color:var(--ink); }
+  .sz-rrow.ok{ border-color:var(--accent-deep); background:var(--accent-tint); }
+  .sz-rrow.ko{ border-color:var(--bad); background:var(--bad-tint); }
+  .sz-rrow .sz-ar{ font-family:var(--sans); font-weight:700; font-size:15px; color:var(--ink-soft); }
+  .sz-rrow.ok .sz-ar{ color:var(--accent-deep); } .sz-rrow.ko .sz-ar{ color:var(--bad); }
+  .sz-rrow small{ display:block; font-family:var(--sans); font-weight:500; font-size:12px; color:var(--ink-soft); margin-top:2px; }
   .sz-tri{ display:flex; flex-direction:column; gap:8px; margin:0 0 12px; }
   .sz-trirow{ display:flex; align-items:center; gap:8px; background:var(--surface); border:1.5px solid var(--line); border-radius:12px; padding:8px 10px; }
   .sz-w{ flex:1; font-size:16px; font-weight:600; }
@@ -2044,6 +2068,41 @@
   .sz-bubble.me.ko{ background:var(--bad-tint); }
   .sz-fix{ font-size:14px; line-height:1.55; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:8px 12px; margin:0 0 8px; }
   .sz-area{ width:100%; min-height:110px; font-family:var(--sans); font-size:17px; padding:10px 12px; border-radius:12px; border:1.5px solid var(--line-strong); background:var(--surface); color:var(--ink); resize:vertical; }
+
+
+  /* ---- v40 : gestion des cartes ---- */
+  .cm-entry{ text-align:center; margin:0 0 14px; }
+  .cm-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 0 12px; }
+  .cm-top h2{ font-family:var(--serif); font-size:20px; margin:0; }
+  .cm-search{ width:100%; min-height:46px; border-radius:12px; border:1.5px solid var(--line-strong); background:var(--surface); color:var(--ink); font-family:var(--sans); font-size:15px; padding:0 12px; margin:0 0 10px; box-sizing:border-box; }
+  .cm-chips{ display:flex; flex-wrap:wrap; gap:6px; margin:0 0 12px; }
+  .cm-chip{ font-family:var(--sans); font-size:12.5px; font-weight:700; color:var(--ink-soft); background:var(--surface); border:1.5px solid var(--line); border-radius:999px; padding:6px 12px; min-height:34px; cursor:pointer; }
+  .cm-chip b{ font-weight:700; color:var(--ink-faint); margin-left:4px; }
+  .cm-chip.on{ background:var(--accent-tint); color:var(--accent-deep); border-color:var(--accent); }
+  .cm-bar{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; background:var(--surface-2); border-radius:12px; padding:8px 12px; margin:0 0 12px; font-family:var(--sans); font-size:13px; }
+  .cm-bar label{ display:inline-flex; align-items:center; gap:8px; font-weight:700; cursor:pointer; margin-right:auto; }
+  .cm-bar input, .cm-row input[type=checkbox]{ width:20px; height:20px; accent-color:var(--accent-deep); }
+  .cm-btn{ font-family:var(--sans); font-size:13px; font-weight:700; border-radius:999px; border:1.5px solid var(--line-strong); background:var(--surface); color:var(--ink); padding:7px 14px; min-height:38px; cursor:pointer; }
+  .cm-btn.accent{ background:var(--accent-deep); border-color:var(--accent-deep); color:var(--on-accent); }
+  .cm-btn.danger{ color:var(--bad); border-color:var(--bad); }
+  .cm-btn.danger.sure{ background:var(--bad); color:#fff; }
+  .cm-btn:disabled{ opacity:.45; cursor:default; }
+  .cm-msg{ background:var(--accent-tint); color:var(--accent-deep); border-radius:10px; padding:9px 12px; font-size:13.5px; font-weight:600; margin:0 0 12px; }
+  .cm-list{ display:flex; flex-direction:column; gap:8px; }
+  .cm-row{ display:grid; grid-template-columns:auto 1fr; gap:6px 12px; align-items:start; background:var(--surface); border:1.5px solid var(--line); border-radius:14px; padding:10px 12px; }
+  .cm-row.sel{ border-color:var(--accent); background:color-mix(in srgb, var(--accent-tint) 55%, var(--surface)); }
+  .cm-row input[type=checkbox]{ margin-top:4px; }
+  .cm-jp{ font-family:var(--serif); font-size:22px; line-height:1.4; font-weight:700; }
+  .cm-rd{ font-family:var(--sans); font-size:13.5px; font-weight:500; color:var(--ink-soft); margin-left:8px; }
+  .cm-fr{ font-size:14.5px; color:var(--ink); margin-top:1px; }
+  .cm-meta{ font-family:var(--sans); font-size:11.5px; color:var(--ink-faint); margin-top:3px; letter-spacing:.02em; }
+  .cm-acts{ grid-column:2; display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:4px; }
+  .cm-acts .tts-btn{ width:36px; height:36px; }
+  .cm-acts .tts-btn svg{ width:17px; height:17px; }
+  .cm-conv{ font-family:var(--serif); font-size:16px; }
+  .cm-conv small{ font-family:var(--sans); font-size:11px; font-weight:700; color:var(--ink-faint); margin-right:6px; }
+  .cm-empty{ text-align:center; color:var(--ink-soft); padding:26px 8px; font-size:14.5px; }
+  .cm-note{ font-size:12.5px; color:var(--ink-faint); line-height:1.5; margin:12px 0 0; }
 
   /* ---- v36 : carte d'accueil directe ---- */
   .kg-home-note{ font-size:13px; color:var(--ink-soft); line-height:1.5; margin:10px 0 0; }
@@ -2346,6 +2405,7 @@
       Object.keys(store).forEach(function(c){ if (CONTENT.indexOf(c) >= 0 || c === 'packmeta') return; Object.keys(store[c]).forEach(function(id){ idbPut(c + '/' + id, undefined); }); delete store[c]; });
       lsSave(); await srvQ;
     },
+    snapshot: async function(){ if (!srv) return ''; var r = await fetch('/api/snapshot', { method: 'POST', headers: { 'X-Kaiwa': '1' } }); if (!r.ok) throw new Error('snapshot'); return r.text(); },
     disk: function(){ return srv; },
     diskError: function(){ return srvErr; },
     flush: function(){ return srvQ; }
@@ -3448,6 +3508,7 @@ window.claude = {
     if (f === 'assoc') {
       var okAll = v.pairs.every(function (p) { return answer && answer[p[0]] === p[1]; });
       res.ok = okAll; res.wrong = v.pairs.filter(function (p) { return !(answer && answer[p[0]] === p[1]); }).map(function (p) { return p[0]; });
+      res.map = answer || {};
       return res;
     }
     if (f === 'tri') {
@@ -4069,12 +4130,18 @@ window.claude = {
       return o;
     }
     if (f === 'assoc') {
-      var map = sui.map || {}, used = Object.keys(map).map(function(k){ return map[k]; });
-      o += '<div class="sz-assoc"><div class="sz-col">' + v.pairs.map(function(pr, i){
-        var m = map[pr[0]];
-        return '<button type="button" class="sz-pair' + (sui.sel === pr[0] ? ' sel' : '') + (m ? ' done' : '') + '" data-s-left="' + i + '">' + rb(pr[0]) + (m ? ' <em>→ ' + rb(m) + '</em>' : '') + '</button>'; }).join('') + '</div>'
-        + '<div class="sz-col">' + st.rights.map(function(rt, i){ return '<button type="button" class="sz-pair r" data-s-right="' + i + '"' + (used.indexOf(rt) >= 0 ? ' disabled' : '') + '>' + rb(rt) + '</button>'; }).join('') + '</div></div>';
-      o += '<p class="sz-hint">Touche un mot à gauche, puis sa forme à droite.</p><div class="kg-answer"><button type="button" class="btn-primary" data-s-send="assoc"' + (Object.keys(map).length === v.pairs.length ? '' : ' disabled') + '>Valider</button></div>';
+      var map = sui.map || {}, seq = sui.seq || [], used = Object.keys(map).map(function(k){ return map[k]; });
+      function numOf(k){ return seq.indexOf(k) + 1; }
+      var nDone = Object.keys(map).length, nAll = v.pairs.length;
+      o += '<div class="sz-step"><span class="' + (sui.sel ? '' : 'on') + '"><i>1</i>un mot à gauche</span><span class="' + (sui.sel ? 'on' : '') + '"><i>2</i>sa correspondance à droite</span><span style="margin-left:auto">' + nDone + ' / ' + nAll + '</span></div>';
+      o += '<div class="sz-assoc' + (sui.sel ? ' picking' : '') + '"><div class="sz-col">' + v.pairs.map(function(pr, i){
+        var m = map[pr[0]], n = m ? numOf(pr[0]) : 0;
+        return '<button type="button" class="sz-pair' + (sui.sel === pr[0] ? ' sel' : '') + (m ? ' pc pc' + (((n - 1) % 6) + 1) : '') + '" data-s-left="' + i + '"><span class="sz-t">' + rb(pr[0]) + '</span><span class="sz-dot">' + (m ? n : '') + '</span></button>'; }).join('') + '</div>'
+        + '<div class="sz-col">' + st.rights.map(function(rt, i){
+          var ownerKey = null; Object.keys(map).forEach(function(k){ if (map[k] === rt) ownerKey = k; });
+          var n2 = ownerKey != null ? numOf(ownerKey) : 0;
+          return '<button type="button" class="sz-pair r' + (n2 ? ' pc pc' + (((n2 - 1) % 6) + 1) : '') + '" data-s-right="' + i + '"><span class="sz-t">' + rb(rt) + '</span><span class="sz-dot">' + (n2 || '') + '</span></button>'; }).join('') + '</div></div>';
+      o += '<p class="sz-hint">' + (nDone ? 'Touche un mot déjà relié pour défaire le lien.' : 'Les liens apparaissent en couleur, avec le même numéro des deux côtés.') + '</p><div class="kg-answer"><button type="button" class="btn-primary" data-s-send="assoc"' + (nDone === nAll ? '' : ' disabled') + '>Valider</button></div>';
       return o;
     }
     if (f === 'tri') {
@@ -4099,6 +4166,13 @@ window.claude = {
       return '<div class="kg-answer"><textarea id="kg-sin" class="sz-area" rows="4" lang="ja" autocomplete="off" spellcheck="false" aria-label="Ta production"></textarea><button type="button" class="btn-primary" data-s-send="libre">Envoyer pour correction</button></div>';
     }
     return '<div class="kg-answer"><input id="kg-sin" type="text" lang="ja" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Ta réponse"><button type="button" class="btn-primary" data-s-send="text">Valider</button></div>';
+  }
+  function assocRecap(st){
+    var res = st.res || {}, map = res.map || sui.map || {};
+    return '<div class="sz-recap">' + st.v.pairs.map(function(p){
+      var mine = map[p[0]], ok = mine === p[1];
+      return '<div class="sz-rrow ' + (ok ? 'ok' : 'ko') + '"><span>' + rb(p[0]) + '</span><span class="sz-ar">' + (ok ? '✓' : '✗') + '</span><span>' + rb(p[1]) + (!ok && mine ? '<small>Tu avais relié : ' + rb(mine) + '</small>' : '') + '</span></div>';
+    }).join('') + '</div>';
   }
   function expectedHtml(st){
     var f = st.fmt, v = st.v;
@@ -4130,7 +4204,8 @@ window.claude = {
       if (!res.ok) {
         if (res.chosen && res.err) o += ' Tu as choisi ' + rb(res.chosen) + ' : ' + plain(res.err) + '.';
         if (TYPED[f] && res.chosen) o += mineHtml(res.chosen, candsOf(v), false);
-        o += '<br>' + (f === 'assoc' || f === 'tri' ? 'Bonne réponse :<br>' : 'Bonne réponse : ') + expectedHtml(st);
+        if (f === 'assoc') o += assocRecap(st);
+        else o += '<br>' + (f === 'tri' ? 'Bonne réponse :<br>' : 'Bonne réponse : ') + expectedHtml(st);
         if (f === 'tri' && res.wrong) o += '<br><small>À revoir : ' + res.wrong.map(function(i){ return rb(v.items[i][0]); }).join(', ') + '</small>';
         if (v.w) o += '<br>' + plain(v.w);
         if (st.recall && kind !== 'mission') o += '<br><small>→ Rappel : ' + plain(st.et || '') + (st.piege ? ' · piège ' + st.piege : '') + '</small>';
@@ -4188,12 +4263,17 @@ window.claude = {
     if ((a = t.getAttribute('data-s-tile')) != null) { (sui.order = sui.order || []).push(+a); return render(); }
     if ((a = t.getAttribute('data-s-untile')) != null) { sui.order.splice(+a, 1); return render(); }
     if ((a = t.getAttribute('data-s-left')) != null) {
-      var key = st.v.pairs[+a][0]; sui.map = sui.map || {};
-      if (sui.map[key]) delete sui.map[key]; else sui.sel = key;
+      var key = st.v.pairs[+a][0]; sui.map = sui.map || {}; sui.seq = sui.seq || [];
+      if (sui.map[key]) { delete sui.map[key]; sui.seq = sui.seq.filter(function(x){ return x !== key; }); sui.sel = null; }
+      else sui.sel = (sui.sel === key ? null : key);
       return render();
     }
     if ((a = t.getAttribute('data-s-right')) != null) {
-      if (!sui.sel) return; sui.map = sui.map || {}; sui.map[sui.sel] = st.rights[+a]; sui.sel = null; return render();
+      sui.map = sui.map || {}; sui.seq = sui.seq || []; var rt = st.rights[+a];
+      var owner = Object.keys(sui.map).filter(function(k){ return sui.map[k] === rt; })[0];
+      if (!sui.sel) { if (owner != null) { delete sui.map[owner]; sui.seq = sui.seq.filter(function(x){ return x !== owner; }); return render(); } return; }
+      if (owner != null) { delete sui.map[owner]; sui.seq = sui.seq.filter(function(x){ return x !== owner; }); }
+      sui.map[sui.sel] = rt; sui.seq = sui.seq.filter(function(x){ return x !== sui.sel; }); sui.seq.push(sui.sel); sui.sel = null; return render();
     }
     if ((a = t.getAttribute('data-s-tri')) != null) { var p = a.split(':'); (sui.tri = sui.tri || [])[+p[0]] = p[1]; return render(); }
     if ((a = t.getAttribute('data-s-self')) != null) { var sc = +a; return sSet(st, { ok: sc >= 0.67, score: sc, crit: [], resume: '', draft: st.draft }); }
@@ -4411,15 +4491,31 @@ window.claude = {
 
   /* ---------- fiche mots ---------- */
   /* écriture en kanji des mots (lexique du projet) : unité+kana d'abord, kana seul ensuite */
-  var lexUK = {}, lexK = {};
+  var lexUK = {}, lexK = {}, lexAll = {};
+  window.__kgWritings = function(kana){ return (lexAll[kana] || []).slice(); };
   async function loadLex(){
     try {
       var d = await db.doc('lexique/mots').get();
       if (!d.exists) return;
-      (d.data().items || []).forEach(function(r){ lexUK[r[0] + ':' + r[1]] = r[2]; if (!lexK[r[1]]) lexK[r[1]] = r[2]; });
+      (d.data().items || []).forEach(function(r){ lexUK[r[0] + ':' + r[1]] = r[2]; if (!lexK[r[1]]) lexK[r[1]] = r[2];
+        var a = lexAll[r[1]] || (lexAll[r[1]] = []); if (r[2] && a.indexOf(r[2]) < 0) a.push(r[2]); });
     } catch (e) {}
   }
   function writing(unit, jp){ return lexUK[unit + ':' + jp] || lexK[jp] || ''; }
+  /* mots connus de l'appli (pour le découpage des phrases au toucher) */
+  window.__kgWords = function(){
+    var out = [];
+    try {
+      var idx = loaded && loaded.idx;
+      if (idx) {
+        Object.keys(idx.units || {}).forEach(function(id){ ((idx.units[id] || {}).words || []).forEach(function(w){ if (w.jp) out.push(w.jp); if (w.reading) out.push(w.reading); }); });
+        Object.keys(idx.fiches || {}).forEach(function(id){ ((idx.fiches[id] || {}).mots || []).forEach(function(m){ if (m.jp) out.push(m.jp); if (m.lecture) out.push(m.lecture); }); });
+      }
+      Object.keys(lexUK).forEach(function(k){ out.push(lexUK[k]); out.push(k.split(':').slice(1).join(':')); });
+      if (bank && SS) Object.keys(bank.decouverte || {}).forEach(function(u){ ((bank.decouverte[u] || {}).mots || []).forEach(function(m){ try { out.push(SS.kanjiForm(m[0])); out.push(SS.kana(m[0])); } catch (e) {} }); });
+    } catch (e) {}
+    return out;
+  };
   function wordCell(unit, jp, reading){
     var wr = writing(unit, jp);
     if (!wr) return '<b>' + h(jp) + '</b> ' + (reading ? '<i>' + h(reading) + '</i> ' : '');
@@ -5057,6 +5153,7 @@ window.claude = {
   let allFlashcards = [];
   let flashcardsReady = false;
   let reviewSession = null; // { queue: [ids], index, results: {good, bad} } or null when idle
+  let cm = { open: false, q: '', filter: 'all', sel: new Set(), msg: '', del: null, bulkDel: false };
   let historyDocsById = {};
   const LEITNER_INTERVAL_DAYS = [0, 0, 2, 4, 8, 16]; // indexed by box 1..5
 
@@ -5166,6 +5263,7 @@ window.claude = {
           <div class="review-stat"><div class="review-stat-n mono">${due.length}</div><div class="review-stat-l">À REVOIR AUJOURD'HUI</div></div>
           <div class="review-stat"><div class="review-stat-n mono">${total}</div><div class="review-stat-l">MOTS DANS LA BOÎTE</div></div>
         </div>
+        <div class="cm-entry"><button type="button" class="btn-ghost" id="cm-open">Gérer mes cartes (${total})</button></div>
         ${due.length > 0
           ? `<button type="button" class="review-start-btn" id="review-start-btn">練習開始 · Commencer la révision (${due.length})</button>`
           : `<div class="tab-panel-intro">Rien à revoir aujourd'hui, bravo ! <button type="button" class="review-link-btn" id="review-start-anyway-btn">Réviser quand même</button></div>`}
@@ -5302,11 +5400,14 @@ window.claude = {
   }
 
   function wireReviewPanel(){
+    if (cm.open && !reviewSession){ cmWire(); return; }
+    const openMgr = document.getElementById('cm-open');
+    if (openMgr) openMgr.addEventListener('click', () => { cm = { open: true, q: '', filter: 'all', sel: new Set(), msg: '', del: null, bulkDel: false }; refreshReviewPanel(); try{ window.scrollTo(0, 0); }catch(e){} });
     const startBtn = document.getElementById('review-start-btn');
     if (startBtn){
       startBtn.addEventListener('click', () => {
         const due = dueFlashcards();
-        reviewSession = { queue: shuffle(due.map(f => f.id)), index: 0, results: { good: 0, bad: 0 } };
+        cm.open = false; reviewSession = { queue: shuffle(due.map(f => f.id)), index: 0, results: { good: 0, bad: 0 } };
         renderCardsView();
       });
     }
@@ -7454,8 +7555,9 @@ window.claude = {
         if (sel === b){ b.classList.remove('sel'); sel = null; return; }
         if (sel.dataset.side === b.dataset.side){ sel.classList.remove('sel'); sel = b; b.classList.add('sel'); return; }
         if (sel.dataset.i === b.dataset.i){
-          [sel, b].forEach(x => { x.classList.remove('sel'); x.classList.add('matched'); });
-          found += 1; sel = null;
+          found += 1;
+          [sel, b].forEach(x => { x.classList.remove('sel'); x.classList.add('matched', 'pc' + (((found - 1) % 6) + 1)); const d = document.createElement('span'); d.className = 'sz-dot'; d.textContent = String(found); x.appendChild(d); });
+          sel = null;
           host.querySelector('#pairs-count').textContent = `${found} paire${found > 1 ? 's' : ''} sur ${it.pairs.length}`;
           if (found === it.pairs.length) done(errors === 0 ? true : (errors <= 2 ? true : false));
         } else {
@@ -7702,7 +7804,7 @@ window.claude = {
     }catch(err){}
     return cands.length ? cands[0] : null;
   }
-  function kzSegmentAt(plain, i){
+  function kzSegmentAtFallback(plain, i){
     if (typeof Intl !== 'undefined' && Intl.Segmenter){
       try{
         const seg = new Intl.Segmenter('ja', { granularity: 'word' });
@@ -7716,6 +7818,209 @@ window.claude = {
     while (s > 0 && kind(plain[s - 1]) === k) s--;
     while (e < plain.length && kind(plain[e]) === k) e++;
     return { s, e };
+  }
+  /* ===== segmentation japonaise (lexique + désinences) ===== */
+  const KZSEG = (function(){
+    const JPCH = /[぀-ヿ㐀-鿿々ー]/;
+    const KANJI = /[㐀-鿿々]/;
+    const KATA = /[゠-ヿー]/;
+    const HIRA = /[぀-ゟー]/;
+    const PARTS = ['は','が','を','に','で','と','も','の','へ','や','か','ね','よ','から','まで','より','だけ','など','でも','しか','ので','のに','けど','ながら','って','や','よね','かな','ぞ','わ'];
+    const COP = ['です','でした','でしょう','ですか','ですね','ですよ','だ','だった','じゃ','では','じゃない','じゃないです','じゃありません','ではありません','じゃありませんでした','ではありませんでした','ください','でしたか'];
+    const POL = ['ます','ません','ました','ませんでした','ましょう','ませんか','ましょうか','ますか','ませんでしたか','ましたか','たい','たくない','たかった','ながら'];
+    const SUF = ['さん','ちゃん','くん','さま','たち','じん','ご'];
+    const NUM = ['ゼロ','れい','いち','に','さん','よん','し','よ','ご','ろく','しち','なな','はち','きゅう','く','じゅう','ひゃく','びゃく','ぴゃく','せん','ぜん','まん','いっ','ろっ','はっ','じゅっ','じっ','ひと','ふた','みっ','よっ','いつ','むっ','やっ','ここの','とお','一','二','三','四','五','六','七','八','九','十','百','千','万','〇'];
+    const CNT = ['じ','ふん','ぷん','さい','にん','ばん','ねんせい','がつ','にち','かい','まい','ほん','ぼん','ぽん','じかん','ねん','かげつ','じゅうじ','こ','つ','ひき','ひゃくえん','えん','ど','だい','けん','さつ','はい','ぱい','ばい','かん','びき','ぴき','めい','じかんめ','ごう','かい','日','時','分','歳','年','月','人','円','番','回','本','枚','個','冊'];
+    const SPEC = { 'する':1, '来る':1, 'くる':1, '行く':1, 'いく':1 };
+  
+    function clean(raw){
+      const out = [];
+      String(raw == null ? '' : raw).split(/[\/／・、,;；\s]+/).forEach(p => {
+        if (!p) return;
+        if (/^[〜～]/.test(p)) p = p.replace(/^[〜～]+[はがをにでともへの](?=.)/, '');
+        p = p.replace(/^[〜～]+|[〜～]+$/g, '');
+        const noPar = p.replace(/[（(][^）)]*[）)]/g, '');
+        const inPar = p.replace(/[（()）]/g, '');
+        [noPar, inPar].forEach(x => { x = x.replace(/[〜～]/g, ''); if (x && JPCH.test(x) && !/を/.test(x) && x.length <= 12) out.push(x); });
+      });
+      return out;
+    }
+  
+    const ROW = {
+      'う':{ i:'い', a:'わ', te:'って', ta:'った' }, 'く':{ i:'き', a:'か', te:'いて', ta:'いた' }, 'ぐ':{ i:'ぎ', a:'が', te:'いで', ta:'いだ' },
+      'す':{ i:'し', a:'さ', te:'して', ta:'した' }, 'つ':{ i:'ち', a:'た', te:'って', ta:'った' }, 'ぬ':{ i:'に', a:'な', te:'んで', ta:'んだ' },
+      'ぶ':{ i:'び', a:'ば', te:'んで', ta:'んだ' }, 'む':{ i:'み', a:'ま', te:'んで', ta:'んだ' }, 'る':{ i:'り', a:'ら', te:'って', ta:'った' }
+    };
+    function pushForms(out, I, A, TE, TA){
+      ['ます','ません','ました','ませんでした','ましょう','ませんか','ましょうか','ますか','たい','たくない','たかった','ながら','ましたか'].forEach(s => out.push(I + s));
+      ['ない','なかった','ないで','なくて','ないでください','なければ'].forEach(s => out.push(A + s));
+      out.push(TE, TA, TE + 'ください', TE + 'います', TE + 'いません', TE + 'いる', TE + 'いた', TE + 'いました', TE + 'いません', TE + 'も', TE + 'は', TE + 'から', TA + 'り', TE + 'みる', TE + 'みます', TA + 'ことがある', TA + 'ことがあります', TE + 'いない');
+    }
+    function inflect(w){
+      const out = [];
+      if (w.length < 2) return out;
+      const last = w[w.length - 1], stem = w.slice(0, -1);
+      if (w.endsWith('する') && w.length > 2){
+        const b = w.slice(0, -2); pushForms(out, b + 'し', b + 'し', b + 'して', b + 'した'); out.push(b + 'しよう', b + 'する', b + 'できる');
+      } else if (w === 'する'){ pushForms(out, 'し', 'し', 'して', 'した'); }
+      else if (w === 'くる' || w === '来る'){
+        const k = w === '来る' ? '来' : '';
+        pushForms(out, k ? '来' : 'き', k ? '来' : 'こ', k ? '来て' : 'きて', k ? '来た' : 'きた');
+      } else if (w.endsWith('いく') || w.endsWith('行く')){
+        const b = w.slice(0, -1) ; const R = ROW['く'];
+        pushForms(out, stem + R.i, stem + R.a, stem + 'って', stem + 'った');
+      } else if (ROW[last] && /[぀-ヿ㐀-鿿々]/.test(stem)){
+        const R = ROW[last];
+        // verbe en う (godan)
+        pushForms(out, stem + R.i, stem + R.a, stem + R.te, stem + R.ta);
+        // verbe en る (ichidan)
+        if (last === 'る') pushForms(out, stem, stem, stem + 'て', stem + 'た');
+      }
+      // adjectif en い
+      if (last === 'い' && w.length >= 2){
+        ['く','くない','くて','かった','くなかった','くありません','くなかったです','ければ','さ'].forEach(s => out.push(stem + s));
+      }
+      return out;
+    }
+  
+    function build(words){
+      const lex = new Map();   // forme -> coût
+      let maxLen = 2;
+      const add = (f, cost) => {
+        if (!f || (f.length < 2 && !KANJI.test(f))) return;
+        const c = cost + 0.04 * f.length;
+        const o = lex.get(f); if (o == null || c < o) lex.set(f, c);
+        if (f.length > maxLen) maxLen = f.length;
+      };
+      const seen = new Set();
+      (words || []).forEach(raw => clean(raw).forEach(w => {
+        if (seen.has(w)) return; seen.add(w);
+        add(w, 1.0);
+        inflect(w).forEach(f => add(f, 1.1));
+      }));
+      return { lex, maxLen, n: seen.size };
+    }
+  
+    // tokenise un « run » (caractères japonais contigus) ; retourne [{s,e,k}]
+    function tokenize(R, L){
+      const n = R.length, INF = 1e9;
+      const best = new Array(n + 1).fill(INF), back = new Array(n + 1).fill(null);
+      best[0] = 0;
+      const tryTok = (i, len, cost, kind) => {
+        const j = i + len; if (j > n) return;
+        if (best[i] + cost < best[j]){ best[j] = best[i] + cost; back[j] = { i, kind }; }
+      };
+      for (let i = 0; i < n; i++){
+        if (best[i] >= INF) continue;
+        const rest = R.slice(i);
+        // lexique + formes fléchies
+        for (let l = 1; l <= Math.min(L.maxLen, n - i); l++){
+          const f = rest.slice(0, l); const c = L.lex.get(f);
+          if (c != null) tryTok(i, l, c, 'lex');
+        }
+        // particules, copule, désinences polies
+        PARTS.forEach(p => { if (rest.startsWith(p)) tryTok(i, p.length, 1.0 + (p.length > 1 ? 0 : 0.25), 'part'); });
+        COP.forEach(p => { if (rest.startsWith(p)) tryTok(i, p.length, 1.0, 'cop'); });
+        POL.forEach(p => { if (rest.startsWith(p)) tryTok(i, p.length, 1.3, 'pol'); });
+        SUF.forEach(p => { if (rest.startsWith(p)) tryTok(i, p.length, 1.2, 'suf'); });
+        NUM.forEach(p => { if (rest.startsWith(p)) tryTok(i, p.length, 1.0, 'num'); });
+        CNT.forEach(p => { if (rest.startsWith(p)) tryTok(i, p.length, 1.3, 'cnt'); });
+        // bloc katakana (mot étranger entier)
+        if (KATA.test(R[i]) && !/[ぁ-ゟ]/.test(R[i])){
+          let e = i; while (e < n && KATA.test(R[e]) && !/[ぁ-ゟ]/.test(R[e])) e++;
+          tryTok(i, e - i, 1.5, 'kata');
+          if (e - i > 1) for (let l = 1; l < e - i; l++) tryTok(i, l, 2 + 3 * l, 'unk');
+        }
+        // inconnu : un bloc de longueur l
+        for (let l = 1; l <= Math.min(14, n - i); l++){
+          const blockK = KANJI.test(R.slice(i, i + l));
+          tryTok(i, l, (blockK ? 3 : 4.2) + 2.4 * l, 'unk');
+        }
+      }
+      const toks = [];
+      let j = n;
+      while (j > 0){ const b = back[j]; toks.push({ s: b.i, e: j, k: b.kind }); j = b.i; }
+      toks.reverse();
+      return toks;
+    }
+  
+    function merge(R, toks, L){
+      // 1. préfixes お / ご
+      for (let t = 0; t < toks.length - 1; t++){
+        const a = toks[t], b = toks[t + 1], tx = R.slice(a.s, a.e);
+        if ((tx === 'お' || tx === 'ご' || tx === '御') && (a.k === 'unk' || a.k === 'lex' || a.k === 'part' || a.k === 'num') && (b.k === 'lex' || b.k === 'unk' || b.k === 'num' || b.k === 'kata')){
+          toks.splice(t, 2, { s: a.s, e: b.e, k: b.k === 'kata' ? 'kata' : 'lex' }); t--;
+        }
+      }
+      // 2. nombres consécutifs puis compteur
+      for (let t = 0; t < toks.length - 1; t++){
+        const a = toks[t], b = toks[t + 1];
+        if (a.k === 'num' && (b.k === 'num' || b.k === 'cnt')){ toks.splice(t, 2, { s: a.s, e: b.e, k: b.k === 'cnt' ? 'lex' : 'num' }); t--; }
+      }
+      // 3. suffixes (さん…) collés au mot précédent
+      for (let t = 1; t < toks.length; t++){
+        const a = toks[t - 1], b = toks[t];
+        const bt = R.slice(b.s, b.e);
+        const isSuf = b.k === 'suf' || ((bt === 'さん' || bt === 'ちゃん' || bt === 'くん') && (b.k === 'lex' || b.k === 'num'));
+        if (isSuf && (a.k === 'lex' || a.k === 'unk' || a.k === 'kata') && !(bt === 'ご' && a.k !== 'lex')){
+          toks.splice(t - 1, 2, { s: a.s, e: b.e, k: 'lex' }); t--;
+        }
+      }
+      // 4. désinence polie collée à une base inconnue (verbe absent du lexique)
+      for (let t = 1; t < toks.length; t++){
+        const a = toks[t - 1], b = toks[t];
+        if (b.k === 'pol' && a.k === 'unk'){ toks.splice(t - 1, 2, { s: a.s, e: b.e, k: 'lex' }); t--; }
+      }
+      return toks;
+    }
+  
+    // run japonais contigu autour de l'index i dans plain
+    function runAround(plain, i){
+      let s = i, e = i + 1;
+      while (s > 0 && JPCH.test(plain[s - 1])) s--;
+      while (e < plain.length && JPCH.test(plain[e])) e++;
+      return { s, e };
+    }
+    function segmentAt(plain, i, L){
+      const run = runAround(plain, i), R = plain.slice(run.s, run.e);
+      let toks = merge(R, tokenize(R, L), L);
+      const off = i - run.s;
+      const t = toks.find(x => off >= x.s && off < x.e) || { s: off, e: off + 1, k: 'unk' };
+      let s = run.s + t.s, e = run.s + t.e;
+      // mot inconnu contenant des kanji : on affine avec le segmenteur du navigateur
+      if (t.k === 'unk' && KANJI.test(plain.slice(s, e)) && typeof Intl !== 'undefined' && Intl.Segmenter){
+        try {
+          const seg = new Intl.Segmenter('ja', { granularity: 'word' });
+          for (const x of seg.segment(plain.slice(s, e))){
+            const a = s + x.index, b = a + x.segment.length;
+            if (i >= a && i < b){ s = a; e = b; break; }
+          }
+        } catch (err) {}
+      }
+      return { s, e, k: t.k };
+    }
+    return { build, segmentAt, tokenize, merge, clean, inflect };
+  })();
+  
+  let kzLexCache = null;
+  function kzLexWords(){
+    const w = [];
+    try{ (window.__kgWords ? window.__kgWords() : []).forEach(x => w.push(x)); }catch(e){}
+    try{ allEntryDocs.forEach(e => (e.vocab || []).forEach(v => { w.push(plainJp(v.jp || '')); if (v.reading) w.push(plainJp(v.reading)); })); }catch(e){}
+    try{ allFlashcards.forEach(c => { w.push(plainJp(c.jp || '')); if (c.reading) w.push(c.reading); }); }catch(e){}
+    return w;
+  }
+  function kzLexGet(){
+    const ws = kzLexWords();
+    if (!kzLexCache || kzLexCache.n !== ws.length) kzLexCache = { n: ws.length, L: KZSEG.build(ws) };
+    return kzLexCache.L;
+  }
+  function kzSegmentAt(plain, i){
+    try{
+      const r = KZSEG.segmentAt(plain, i, kzLexGet());
+      if (r && r.e > r.s && i >= r.s && i < r.e) return { s: r.s, e: r.e };
+    }catch(err){}
+    return kzSegmentAtFallback(plain, i);
   }
   function kzPick(e){
     const t = e.target;
@@ -8081,8 +8386,173 @@ Réponds UNIQUEMENT par {"story":"..."}.`);
       <div class="word-chips">${list.map(k => `<button type="button" class="word-chip kz-chip" data-kj-open="${escAttr(k.char)}"><b style="font-size:22px">${escHtml(k.char)}</b>${escHtml(k.meaning || '')}</button>`).join('')}</div>
       <button type="button" class="review-start-btn secondary" data-kj-start>Réviser ces kanji (${list.length})</button></div>`;
   }
+
+  // ---------- gestion des cartes : liste, suppression, passage en kanji ----------
+  const CM_KANA_RE = /^[ぁ-ゟ゠-ヿー〜・]+$/;
+  function cmFr(s){ return escHtml(String(s == null ? '' : s)); }
+  function cmCardKana(card){ const jp = plainJp(card.jp || ''); return (!KANJI_RE.test(jp) && CM_KANA_RE.test(jp) && (!card.reading || card.reading === card.jp || plainJp(card.reading) === jp)) ? jp : ''; }
+  function cmWritingMap(){
+    const m = {};
+    const add = (rd, jp) => { if (!rd || !jp || !KANJI_RE.test(jp) || !CM_KANA_RE.test(rd)) return; const a = m[rd] || (m[rd] = []); if (a.indexOf(jp) < 0) a.push(jp); };
+    try{ allEntryDocs.forEach(e => (e.vocab || []).forEach(v => add(plainJp(v.reading || ''), plainJp(v.jp || '')))); }catch(e){}
+    try{ allFlashcards.forEach(c => { const jp = plainJp(c.jp || ''); if (KANJI_RE.test(jp)) add(plainJp(c.reading || ''), jp); }); }catch(e){}
+    return m;
+  }
+  function cmCands(card, wmap){
+    const kana = cmCardKana(card); if (!kana) return [];
+    const out = [];
+    const push = w => { if (w && w !== kana && KANJI_RE.test(w) && out.indexOf(w) < 0) out.push(w); };
+    try{ (window.__kgWritings ? window.__kgWritings(kana) : []).forEach(push); }catch(e){}
+    (wmap[kana] || []).forEach(push);
+    return out;
+  }
+  function cmItems(){
+    const wmap = cmWritingMap(), today = todayStr();
+    return allFlashcards.map(c => ({ c, cands: cmCands(c, wmap), due: (c.nextReview || '') <= today, kanji: hasKanjiReading(c) || KANJI_RE.test(plainJp(c.jp || '')) }))
+      .sort((a, b) => String(b.c.addedAt || '').localeCompare(String(a.c.addedAt || '')));
+  }
+  function cmFiltered(items){
+    const q = cm.q.trim().toLowerCase();
+    return items.filter(it => {
+      if (cm.filter === 'kana' && it.kanji) return false;
+      if (cm.filter === 'conv' && !it.cands.length) return false;
+      if (cm.filter === 'kanji' && !it.kanji) return false;
+      if (cm.filter === 'due' && !it.due) return false;
+      if (q && ((plainJp(it.c.jp || '') + ' ' + (it.c.reading || '') + ' ' + (it.c.fr || '')).toLowerCase().indexOf(q) < 0)) return false;
+      return true;
+    });
+  }
+  function cmDateLabel(c){
+    const d = c.nextReview || '', today = todayStr();
+    if (!d || d <= today) return 'à revoir';
+    return 'revoir le ' + d.slice(8, 10) + '/' + d.slice(5, 7);
+  }
+  function cmRowHtml(it){
+    const c = it.c, jp = plainJp(c.jp || ''), rd = c.reading && c.reading !== c.jp ? plainJp(c.reading) : '';
+    const sel = cm.sel.has(c.id);
+    const conv = it.cands.length ? `<span class="cm-conv"><small>漢</small>${it.cands.map(w => `<button type="button" class="cm-btn accent" data-cm-conv="${escAttr(c.id)}" data-w="${escAttr(w)}">→ <span class="cm-conv">${cmFr(w)}</span></button>`).join(' ')}</span>` : '';
+    const del = cm.del === c.id
+      ? `<button type="button" class="cm-btn danger sure" data-cm-del="${escAttr(c.id)}">Confirmer</button><button type="button" class="cm-btn" data-cm-nodel>Annuler</button>`
+      : `<button type="button" class="cm-btn danger" data-cm-del="${escAttr(c.id)}">Supprimer</button>`;
+    return `<div class="cm-row${sel ? ' sel' : ''}" data-id="${escAttr(c.id)}">
+      <input type="checkbox" data-cm-sel="${escAttr(c.id)}" ${sel ? 'checked' : ''} aria-label="Sélectionner ${escAttr(jp)}">
+      <div>
+        <div class="cm-jp">${cmFr(jp)}${rd ? `<span class="cm-rd">${cmFr(rd)}</span>` : ''}</div>
+        <div class="cm-fr">${cmFr(c.fr || '')}</div>
+        <div class="cm-meta">Boîte ${c.box || 1} · ${cmDateLabel(c)}</div>
+      </div>
+      <div class="cm-acts">${ttsBtnHtml(jp, '', rd)}${conv}${del}</div>
+    </div>`;
+  }
+  function cmListHtml(){
+    const items = cmItems(), shown = cmFiltered(items);
+    const nKana = items.filter(i => !i.kanji).length, nConv = items.filter(i => i.cands.length).length, nKanji = items.filter(i => i.kanji).length, nDue = items.filter(i => i.due).length;
+    const chip = (k, label, n) => `<button type="button" class="cm-chip${cm.filter === k ? ' on' : ''}" data-cm-filter="${k}">${label}<b>${n}</b></button>`;
+    const selIds = shown.filter(i => cm.sel.has(i.c.id)).map(i => i.c.id);
+    const allSel = shown.length > 0 && selIds.length === shown.length;
+    const selConv = shown.filter(i => cm.sel.has(i.c.id) && i.cands.length === 1).length;
+    const convAll = shown.filter(i => i.cands.length === 1).length;
+    let bar = '';
+    if (shown.length){
+      bar = `<div class="cm-bar"><label><input type="checkbox" data-cm-all ${allSel ? 'checked' : ''}> ${selIds.length ? selIds.length + ' sélectionnée' + (selIds.length > 1 ? 's' : '') : 'Tout sélectionner'}</label>`;
+      if (selIds.length){
+        if (selConv) bar += `<button type="button" class="cm-btn accent" data-cm-bulkconv="sel">Passer en kanji (${selConv})</button>`;
+        bar += cm.bulkDel
+          ? `<button type="button" class="cm-btn danger sure" data-cm-bulkdel>Supprimer ${selIds.length} carte${selIds.length > 1 ? 's' : ''} ?</button><button type="button" class="cm-btn" data-cm-nobulk>Annuler</button>`
+          : `<button type="button" class="cm-btn danger" data-cm-bulkdel>Supprimer (${selIds.length})</button>`;
+      } else if (convAll){
+        bar += `<button type="button" class="cm-btn accent" data-cm-bulkconv="all">Tout passer en kanji (${convAll})</button>`;
+      }
+      bar += '</div>';
+    }
+    return `<div class="cm-chips">${chip('all', 'Toutes', items.length)}${chip('kana', 'En kana', nKana)}${chip('conv', 'Convertibles', nConv)}${chip('kanji', 'Avec kanji', nKanji)}${chip('due', 'À revoir', nDue)}</div>`
+      + (cm.msg ? `<div class="cm-msg" role="status">${cmFr(cm.msg)}</div>` : '')
+      + bar
+      + (shown.length ? `<div class="cm-list">${shown.map(cmRowHtml).join('')}</div>` : `<div class="cm-empty">${items.length ? 'Aucune carte ne correspond.' : 'Ta boîte est vide.'}</div>`)
+      + `<p class="cm-note">« Passer en kanji » remplace le mot en kana par son écriture en kanji (la lecture en kana est conservée) ; la progression de la carte est gardée. Si un mot a plusieurs écritures possibles, choisis la bonne dans la ligne.</p>`;
+  }
+  function cmHtml(){
+    return `<div class="block" style="padding-top:16px">
+      <div class="cm-top"><button type="button" class="review-link-btn" id="cm-back">‹ Retour aux cartes</button><h2>Mes cartes</h2></div>
+      <input id="cm-q" class="cm-search" type="search" placeholder="Chercher un mot, une lecture, un sens" value="${escAttr(cm.q)}" aria-label="Chercher une carte">
+      <div id="cm-body">${cmListHtml()}</div>
+    </div>`;
+  }
+  function cmRerender(){
+    const body = document.getElementById('cm-body'); if (!body) return;
+    body.innerHTML = cmListHtml(); cmWireBody();
+  }
+  async function cmDelete(ids){
+    let n = 0;
+    for (const id of ids){
+      try{ await flashcardsRef.doc(id).delete(); allFlashcards = allFlashcards.filter(f => f.id !== id); cm.sel.delete(id); n++; }catch(e){}
+    }
+    return n;
+  }
+  async function cmConvert(card, writing){
+    const oldId = card.id, kana = cmCardKana(card); if (!kana || !writing) return 'err';
+    const newId = flashcardId(writing);
+    const existing = allFlashcards.find(f => f.id === newId && f.id !== oldId);
+    try{
+      let data = null;
+      if (!existing){
+        data = {}; Object.keys(card).forEach(k => { if (k !== 'id' && card[k] !== undefined) data[k] = card[k]; });
+        data.jp = writing; data.reading = kana;
+        await flashcardsRef.doc(newId).set(data);
+      }
+      await flashcardsRef.doc(oldId).delete();
+      allFlashcards = allFlashcards.filter(f => f.id !== oldId);
+      if (data) allFlashcards.push(Object.assign({ id: newId }, data));
+      cm.sel.delete(oldId);
+      return existing ? 'merged' : 'ok';
+    }catch(e){ return 'err'; }
+  }
+  function cmWireBody(){
+    const body = document.getElementById('cm-body'); if (!body) return;
+    body.querySelectorAll('[data-cm-filter]').forEach(b => b.addEventListener('click', () => { cm.filter = b.dataset.cmFilter; cm.msg = ''; cm.del = null; cm.bulkDel = false; cmRerender(); }));
+    body.querySelectorAll('[data-cm-sel]').forEach(b => b.addEventListener('change', () => { if (b.checked) cm.sel.add(b.dataset.cmSel); else cm.sel.delete(b.dataset.cmSel); cm.bulkDel = false; cmRerender(); }));
+    const all = body.querySelector('[data-cm-all]');
+    if (all) all.addEventListener('change', () => { const shown = cmFiltered(cmItems()); if (all.checked) shown.forEach(i => cm.sel.add(i.c.id)); else shown.forEach(i => cm.sel.delete(i.c.id)); cm.bulkDel = false; cmRerender(); });
+    body.querySelectorAll('[data-cm-del]').forEach(b => b.addEventListener('click', async () => {
+      const id = b.dataset.cmDel;
+      if (cm.del !== id){ cm.del = id; cmRerender(); return; }
+      cm.del = null; const n = await cmDelete([id]); cm.msg = n ? 'Carte supprimée.' : 'Suppression impossible pour le moment.'; cmRerender();
+    }));
+    body.querySelectorAll('[data-cm-nodel]').forEach(b => b.addEventListener('click', () => { cm.del = null; cmRerender(); }));
+    body.querySelectorAll('[data-cm-bulkdel]').forEach(b => b.addEventListener('click', async () => {
+      const ids = cmFiltered(cmItems()).filter(i => cm.sel.has(i.c.id)).map(i => i.c.id);
+      if (!cm.bulkDel){ cm.bulkDel = true; cmRerender(); return; }
+      cm.bulkDel = false; const n = await cmDelete(ids); cm.msg = n + ' carte' + (n > 1 ? 's' : '') + ' supprimée' + (n > 1 ? 's' : '') + '.'; cmRerender();
+    }));
+    body.querySelectorAll('[data-cm-nobulk]').forEach(b => b.addEventListener('click', () => { cm.bulkDel = false; cmRerender(); }));
+    body.querySelectorAll('[data-cm-conv]').forEach(b => b.addEventListener('click', async () => {
+      const card = allFlashcards.find(f => f.id === b.dataset.cmConv); if (!card) return;
+      b.disabled = true;
+      const r = await cmConvert(card, b.dataset.w);
+      cm.msg = r === 'ok' ? 'Carte passée en kanji : ' + b.dataset.w + '.' : r === 'merged' ? 'Ce mot existait déjà en kanji : les deux cartes ont été fusionnées.' : 'Conversion impossible pour le moment.';
+      cmRerender();
+    }));
+    body.querySelectorAll('[data-cm-bulkconv]').forEach(b => b.addEventListener('click', async () => {
+      const mode = b.dataset.cmBulkconv;
+      const items = cmFiltered(cmItems()).filter(i => i.cands.length === 1 && (mode === 'all' || cm.sel.has(i.c.id)));
+      b.disabled = true; let ok = 0, merged = 0, err = 0;
+      for (const it of items){ const r = await cmConvert(it.c, it.cands[0]); if (r === 'ok') ok++; else if (r === 'merged') merged++; else err++; }
+      const ambiguous = cmFiltered(cmItems()).filter(i => i.cands.length > 1).length;
+      cm.msg = ok + ' carte' + (ok > 1 ? 's' : '') + ' passée' + (ok > 1 ? 's' : '') + ' en kanji' + (merged ? ', ' + merged + ' fusionnée' + (merged > 1 ? 's' : '') : '') + (err ? ', ' + err + ' en échec' : '') + (ambiguous ? ' · ' + ambiguous + ' à choisir à la main (plusieurs écritures possibles).' : '.');
+      cmRerender();
+    }));
+  }
+  function cmWire(){
+    const back = document.getElementById('cm-back');
+    if (back) back.addEventListener('click', () => { cm.open = false; cm.msg = ''; cm.del = null; cm.bulkDel = false; refreshReviewPanel(); });
+    const q = document.getElementById('cm-q');
+    if (q) q.addEventListener('input', () => { cm.q = q.value; cm.del = null; cmRerender(); });
+    cmWireBody();
+  }
+
   function buildReviewPanelHtml(){
     if (reviewSession) return sessionCardHtml();
+    if (cm.open) return cmHtml();
     return buildReviewPanelHtmlBase() + kzCardsBlock();
   }
 
@@ -8346,10 +8816,10 @@ Réponds UNIQUEMENT par {"story":"..."}.`);
         } catch (e) { m2('Téléchargement non effectué : copie le texte ci-dessous.'); }
       } catch (e) { m2('Sauvegarde impossible.', true); }
     });
-    var armed = false;
-    sec.querySelector('#std-rz').addEventListener('click', async function(ev){
-      if (!armed) { armed = true; ev.target.textContent = 'Confirmer : tout effacer (le contenu reste)'; setTimeout(function(){ armed = false; ev.target.textContent = 'Remettre ma progression à zéro'; }, 5000); return; }
-      await K.resetProgress(); m2('Progression effacée. Rechargement…'); setTimeout(function(){ location.reload(); }, 500);
+    sec.querySelector('#std-rz').addEventListener('click', async function(){
+      if (!window.confirm('Effacer TOUTE ta progression (séances, cartes, missions, bilans) ?\n\nLes leçons importées restent. Une copie de sécurité est faite avant dans le dossier « backups ».')) return;
+      try { var snap = await K.snapshot(); if (snap) m2('Copie de sécurité : backups/' + snap); } catch (e) { if (!window.confirm('La copie de sécurité a échoué. Effacer quand même ?')) return; }
+      await K.resetProgress(); m2('Progression effacée. Rechargement…'); setTimeout(function(){ location.reload(); }, 800);
     });
   }
 })();
